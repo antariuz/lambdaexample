@@ -12,33 +12,35 @@ public class Main {
         List<Car> carList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Car car = new Car();
-            car.setBrand("Car" + random.nextInt(100));
-            car.setModel("Model" + random.nextInt(100));
-            car.setManufacturedYear(random.nextInt(30) + 1970);
+            if (i != 4) {
+                car.setBrand("Car" + random.nextInt(100));
+                car.setModel("Model" + random.nextInt(100));
+                car.setManufacturedYear(random.nextInt(30) + 1970);
+            } else {
+                car.setBrand("POLICE");
+                car.setManufacturedYear(777);
+            }
             carList.add(car);
         }
+        //Initial list
         System.out.println("---------- Initial List of Car");
-        for (Car object : carList) {
-            System.out.println(object);
-        }
+        carList.forEach(car -> System.out.println(car));
 
         //Year sort
-        carList.sort((car1, car2) -> car1.getManufacturedYear() - car2.getManufacturedYear());
-
         System.out.println("---------- Year sort");
-        for (Car object : carList) {
-            System.out.println(object);
-        }
+        carList.sort((car1, car2) -> car1.getManufacturedYear() - car2.getManufacturedYear());
+        carList.forEach(car -> System.out.println(car));
 
         //Brand sort
+        System.out.println("---------- Year sort");
         carList.sort((car1, car2) -> car1.getBrand().compareTo(car2.getBrand()));
+        carList.forEach(car -> System.out.println(car));
 
-        System.out.println("---------- Brand name sort");
-        for (Car object : carList) {
-            System.out.println(object);
-        }
-
-
+        //POLICE SEARCH
+        System.out.println("---------- Searching for the POLICE");
+        carList.forEach(car -> {
+            if ("POLICE".equals(car.getBrand())) System.out.println("POLICE HAS BEEN FOUNDED" + "\nFUCK THE POLICE");
+        });
     }
 
 }
