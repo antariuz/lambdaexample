@@ -33,7 +33,7 @@ public class Main {
         //Brand sort
         carList.sort((car1, car2) -> car1.getBrand().compareTo(car2.getBrand()));
 
-        System.out.println("---------- Year sort");
+        System.out.println("---------- Brand name sort");
         for (Car object : carList) {
             System.out.println(object);
         }
