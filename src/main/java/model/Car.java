@@ -3,7 +3,8 @@ package model;
 import lombok.Data;
 import lombok.ToString;
 
-@Data @ToString
+@Data
+@ToString
 public class Car {
 
     private String brand;
