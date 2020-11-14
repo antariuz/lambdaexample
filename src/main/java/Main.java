@@ -1,10 +1,11 @@
 import model.Car;
 import model.Potato;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.text.DecimalFormat;
+import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -30,11 +31,11 @@ public class Main {
             Potato potato = new Potato();
             potato.setName(getRandomName() + randomNumber.apply(100));
             potato.setVariety(getRandomName() + randomNumber.apply(100));
-            potato.setPrice((double) ((randomNumber.apply(300) + 300) / 3));
+            potato.setPrice( ((randomNumber.apply(300) + 300) / 3d));
             return potato;
         };
 
-        for (int i = 0; i < 3; i++) list.add(createRandomPotato.get());
+        for (int i = 0; i < 10; i++) list.add(createRandomPotato.get());
         return list;
     }
 
@@ -48,7 +49,7 @@ public class Main {
             return car;
         };
 
-        for (int i = 0; i < 3; i++) list.add(createRandomCar.get());
+        for (int i = 0; i < 10; i++) list.add(createRandomCar.get());
         return list;
     }
 
@@ -62,14 +63,24 @@ public class Main {
         List<Potato> potatoList = createRandomPotatoList();
         List<Car> carList = createRandomCarList();
 
-        //Initial Potato list
-        System.out.println("---------- Initial List of Potatoes");
-        showList(potatoList);
+        //map
+        System.out.println("---------- Get prices from List of Potatoes");
+        potatoList.stream().map(x -> new DecimalFormat("#0.00").format(x.getPrice())).forEach(System.out::println);
+
+        //flatmap
+        List<Potato> newPotatoList = createRandomPotatoList();
+        List<Potato> combinedPotatoList = Stream.of(potatoList, newPotatoList).flatMap(Collection::stream).collect(Collectors.toList());
+        System.out.println("---------- Created new List of Potatoes from two lists");
+        combinedPotatoList.forEach(System.out::println);
+
+        //filter
+        System.out.println("---------- Show only potatoes with price under 120");
+        combinedPotatoList.stream().map(Potato::getPrice).filter(x -> x > 120d).forEach(System.out::println);
 
         //Discount price set for holidays
         System.out.println("---------- Discounted prices list");
-        potatoList.forEach(x -> x.setPrice(setDiscountPrice.apply(x.getPrice(), (double) 15)));
-        showList(potatoList);
+        potatoList.stream().map(x -> x.getPrice() - (x.getPrice() * 15) / 100).map(x -> System.out.print(intoUAH.apply(x.getPrice()) + " | ").forEach(System.out::println);
+
         potatoList.forEach(x -> System.out.print(intoUAH.apply(x.getPrice()) + " | "));
         System.out.println("\n");
 
