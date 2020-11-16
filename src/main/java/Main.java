@@ -2,7 +2,10 @@ import model.Car;
 import model.Potato;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,7 +34,7 @@ public class Main {
             Potato potato = new Potato();
             potato.setName(getRandomName() + randomNumber.apply(100));
             potato.setVariety(getRandomName() + randomNumber.apply(100));
-            potato.setPrice( ((randomNumber.apply(300) + 300) / 3d));
+            potato.setPrice(((randomNumber.apply(300) + 300) / 3d));
             return potato;
         };
 
@@ -54,7 +57,7 @@ public class Main {
     }
 
     private static void showList(List list) {
-        list.forEach(x -> System.out.println(x));
+        list.forEach(System.out::println);
         System.out.println();
     }
 
@@ -65,7 +68,7 @@ public class Main {
 
         //map
         System.out.println("---------- Get prices from List of Potatoes");
-        potatoList.stream().map(x -> new DecimalFormat("#0.00").format(x.getPrice())).forEach(System.out::println);
+        potatoList.stream().map(Potato::getPrice).forEach(System.out::println);
 
         //flatmap
         List<Potato> newPotatoList = createRandomPotatoList();
@@ -74,24 +77,25 @@ public class Main {
         combinedPotatoList.forEach(System.out::println);
 
         //filter
-        System.out.println("---------- Show only potatoes with price under 120");
-        combinedPotatoList.stream().map(Potato::getPrice).filter(x -> x > 120d).forEach(System.out::println);
+        System.out.println("---------- Show only potatoes with price above 120");
+        List<Potato> filteredPotatoList = combinedPotatoList.stream().filter(x -> x.getPrice() > 120d).collect(Collectors.toList());
+        filteredPotatoList.forEach(System.out::println);
 
-        //Discount price set for holidays
-        System.out.println("---------- Discounted prices list");
-        potatoList.stream().map(x -> x.getPrice() - (x.getPrice() * 15) / 100).map(x -> System.out.print(intoUAH.apply(x.getPrice()) + " | ").forEach(System.out::println);
+        //limit
+        System.out.println("---------- Show first 3 potatoes with price above 120");
+        filteredPotatoList.stream().limit(3).forEach(System.out::println);
 
-        potatoList.forEach(x -> System.out.print(intoUAH.apply(x.getPrice()) + " | "));
-        System.out.println("\n");
+        //skip
+        System.out.println("---------- Show potatoes from 4th position with price above 120");
+        filteredPotatoList.stream().skip(3).forEach(System.out::println);
 
-        //Initial Car list
-        System.out.println("---------- Initial List of Potatoes");
-        showList(carList);
+        //sorted
+        System.out.println("---------- Show sorted potatoes with price above 120");
+        filteredPotatoList.stream().map(Potato::getPrice).sorted().forEach(System.out::println);
 
-        //Brand sort
-        System.out.println("---------- Year sort");
-        carList.sort((car1, car2) -> car1.getBrand().compareTo(car2.getBrand()));
-        showList(carList);
+        //distinct
+        System.out.println("---------- Show unique potatoes with price above 120");
+        filteredPotatoList.stream().map(Potato::getPrice).distinct().forEach(System.out::println);
 
         //POLICE SEARCH
         System.out.println("---------- Searching for the POLICE");
