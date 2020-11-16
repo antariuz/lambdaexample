@@ -67,8 +67,8 @@ public class Main {
         List<Car> carList = createRandomCarList();
 
         //map
-        System.out.println("---------- Get prices from List of Potatoes");
-        potatoList.stream().map(Potato::getPrice).forEach(System.out::println);
+        System.out.println("---------- Get rounded prices from List of Potatoes");
+        potatoList.stream().map(x -> Math.floor(x.getPrice() * 100) / 100).forEach(System.out::println);
 
         //flatmap
         List<Potato> newPotatoList = createRandomPotatoList();
